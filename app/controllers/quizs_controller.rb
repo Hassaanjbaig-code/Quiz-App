@@ -6,7 +6,6 @@ class QuizsController < ApplicationController
   def index
     @quiz = @quizs[@start_quiz]
     @complete_quiz_percentage = progress_width(@start_quiz, @total_quiz - 1)
-    # def progress_width(current_quiz, total_quiz)
   end
 
   def next_quiz
@@ -54,7 +53,7 @@ class QuizsController < ApplicationController
     i = 0
     puts @answers.length
     while i < @answers.length
-      if @answers[i] == @quizs[i][:correctAnswer]
+      if @answers[i] == @quizs[i]["correctAnswer"]
         marks_calculate +=1
       else
         @incorrect_quiz+=1
@@ -88,26 +87,7 @@ class QuizsController < ApplicationController
   end
 
   def quiz_options
-    @quizs = [
-       {
-      "id": 1,
-      "question": "Which of the following is considered the brain of the computer?",
-      "options": [ "CPU", "RAM", "Hard Disk", "Monitor" ],
-      "correctAnswer": "CPU"
-      },
-      {
-        "id": 2,
-        "question": "What does RAM stand for?",
-        "options": [ "Read Access Memory", "Random Access Memory", "Run All Memory", "Reset All Memory" ],
-        "correctAnswer": "Random Access Memory"
-      },
-      {
-        "id": 3,
-        "question": "Which device is used to store data permanently?",
-        "options": [ "RAM", "Cache", "Hard Disk", "ROM" ],
-        "correctAnswer": "Hard Disk"
-      }
-    ]
+    @quizs = session[:quizs]
     @total_quiz = @quizs.count
     @start_quiz = session[:start_quiz] || 0
     @answers = session[:answers] || []

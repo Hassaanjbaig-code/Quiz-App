@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
- # get "quiz/index"
-  # resources :quizs
+  get "new_quiz", to: "quizs_start#new"
+  post "quizs_create", to: "quizs_start#create"
   get "quizs/next_quiz", as: :next_quiz
   get "quizs/previous_quiz", as: :previous_quiz
   post "quizs/submit_quiz", as: :submit

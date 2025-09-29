@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "quizs/previous_quiz", as: :previous_quiz
   post "quizs/submit_quiz", as: :submit
   get "quizs/result_quiz", as: :result
+  resource :quizs
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

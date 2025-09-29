@@ -1,0 +1,43 @@
+<% provide(:title, "Quiz Time!") %>
+<section
+  data-controller="quiz"
+  class="flex w-full items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4">
+  <div class="max-w-xl w-full bg-white rounded-2xl shadow-lg p-6 flex flex-col">
+    <!-- Title -->
+    <h1 class="text-5xl font-extrabold text-gray-800 text-center mb-6">Quiz Time!</h1>
+
+    <!-- Progress Bar -->
+    <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden mb-6">
+      <div 
+        style="width: <%= @complete_quiz_percentage %>%;"
+        class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 h-full transition-all duration-300">
+      </div>
+    </div>
+
+    <turbo-frame 
+      id="quiz" 
+      class="quiz<%= @start_quiz %>"
+      >
+        <%= render 'quiz', quiz: @quiz, start_quiz: @start_quiz %>
+      </turbo-frame>
+    <div class="flex justify-between">
+      <button 
+        type="button"
+        id="previous"
+        class="px-5 py-2 bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition">
+        <a href="<%= previous_quiz_path %>" >
+          Previous
+        </a>
+      </button>
+      <button 
+        id="next" 
+        data-url="<%= submit_path %>" 
+        data-action="click->quiz#disableButton" 
+        data-nexturl="<%= @total_quiz - 1 == @start_quiz ? result_path : next_quiz_path %>"
+        class="px-5 py-2 bg-purple-500 text-white rounded-full transition cursor-pointer"
+      >
+        <%= @total_quiz - 1 == @start_quiz ? "Submit" : "Next" %>
+      </button>
+    </div>
+  </div>
+</section>

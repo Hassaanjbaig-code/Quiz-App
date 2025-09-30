@@ -62,4 +62,9 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "rails-controller-testing", "~> 1.0"
+  gem "minitest", "~> 5.25"
+  gem "minitest-reporters", "~> 1.7"
+  gem "guard", "~> 2.19"
+  gem "guard-minitest", "~> 2.4"
 end

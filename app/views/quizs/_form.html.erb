@@ -1,0 +1,22 @@
+    <%= form_with url: quizs_path, method: :post, class: "flex flex-col space-y-4" do |f| %>
+      <div>
+        <%= f.label "Your Name", class: "block text-gray-700 font-semibold mb-1" %>
+        <%= f.text_field :name, placeholder: "Enter your name", required: true,
+              class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+      </div>
+
+      <div>
+        <%= f.label "Select Quiz", class: "block text-gray-700 font-semibold mb-1"  %>
+        <%= f.text_area "question", class:"w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 h-72", required: true, placeholder: "Question #1 Which device is considered the “brain” of the computer?
+Options: a) Monitor, b) CPU, c) Keyboard, d) Mouse
+Correct Answer: b) CPU
+
+Question #2 Which device is used for permanent data storage?
+Options: a) RAM, b) Hard Disk, c) Cache, d) Register
+Correct Answer: b) Hard Disk" %>
+      </div>
+
+      <%= f.submit "Start Quiz",
+          class: "w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors" %>
+    <% end %>
+

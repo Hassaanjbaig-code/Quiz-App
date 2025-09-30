@@ -24,9 +24,22 @@ module QuizsHelper
     final = answer.sub(/correctanswer:\s*[a-z]\)\s*/i, "")
     final
   end
+
   def progress_width(current_quiz, total_quiz)
     percentage = (current_quiz.to_f / total_quiz.to_f) * 100
     clamped_percentage = [ [ percentage, 0 ].max, 100 ].min
     clamped_percentage
+  end
+
+  def zero_if_negative(num)
+    [ num.abs, 0 ].max
+  end
+
+  def quiz_options
+    @quizs = session[:quizs]
+    @total_quiz = @quizs.count
+    @start_quiz = session[:start_quiz] || 0
+    @answers = session[:answers] || []
+    @complete_quiz_percentage = 0
   end
 end

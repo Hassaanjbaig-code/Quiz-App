@@ -1,12 +1,10 @@
-<% provide(:title, "Quiz Time!") %>
+<% provide(:title, "Quiz Started!") %>
 <section
   data-controller="quiz"
   class="flex w-full items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4">
   <div class="max-w-xl w-full bg-white rounded-2xl shadow-lg p-6 flex flex-col">
-    <!-- Title -->
-    <h1 class="text-5xl font-extrabold text-gray-800 text-center mb-6">Quiz Time!</h1>
+    <h1 class="text-5xl font-extrabold text-gray-800 text-center mb-6">Quiz Started <%= @name %></h1>
 
-    <!-- Progress Bar -->
     <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden mb-6">
       <div 
         style="width: <%= @complete_quiz_percentage %>%;"

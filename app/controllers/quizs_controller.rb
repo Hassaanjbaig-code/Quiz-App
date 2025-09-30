@@ -7,6 +7,7 @@ class QuizsController < ApplicationController
   end
 
   def show
+    @name = session[:name]
     @quiz = @quizs[@start_quiz]
     @complete_quiz_percentage = progress_width(@start_quiz, @total_quiz - 1)
   end
@@ -14,6 +15,8 @@ class QuizsController < ApplicationController
   def create
     @quizs = []
     question = params[:question].downcase!
+    @name = params[:name]
+    session[:name] = @name
     question = question.split("\n\n").map { | qus | qus.split("\n") }
     question.each_with_index do | ques, index |
       hash = {}
@@ -27,15 +30,15 @@ class QuizsController < ApplicationController
         elsif check_quiz[0] == "correct"
           hash[:correctAnswer] = answer_extrator(ques.downcase)
         else
-          # error
-          p "Format incorrect"
+          flash[:error] = "format error"
+          render "index", status: :unprocessable_entity and return
         end
       end
         @quizs << hash
         hash = {}
     end
     session[:quizs] = @quizs
-    redirect_to quizs_path
+    redirect_to start_path
   end
 
   def next_quiz
@@ -44,7 +47,7 @@ class QuizsController < ApplicationController
       @quiz = @quizs[@start_quiz]
       @complete_quiz_percentage = progress_width(@start_quiz, @total_quiz - 1)
       respond_to do | format |
-        format.html { redirect_to quizs_path, notics: "Next Quiz" }
+        format.html { redirect_to start_path, notics: "Next Quiz" }
         format.turbo_stream
       end
   end
@@ -61,7 +64,7 @@ class QuizsController < ApplicationController
     @answers = session[:answers]
     @complete_quiz_percentage = progress_width(@start_quiz, @total_quiz - 1)
     respond_to do | format |
-      format.html { redirect_to quizs_path, notics: "Previous Quiz" }
+      format.html { redirect_to start_path, notics: "Previous Quiz" }
       format.turbo_stream { render :next_quiz }
     end
   end
@@ -72,19 +75,18 @@ class QuizsController < ApplicationController
     respond_to do | format |
       if @answers.include?(quizs_params[:answer])
         format.json { render json: { status: 200, message: "Accepted" }, status: 200 }
+        flash[:success] = "Completed Quiz"
       end
     end
   end
 
   def result_quiz
     session[:answers] = @answers
-    p "This is the answer", @answers
-    p "This is the quiz", @quizs
     marks_calculate = 0
     @incorrect_quiz = 0
     i = 0
     while i < @answers.length
-      if @answers[i].downcase == @quizs[i]["correctAnswer"]
+      if @answers[i].downcase.gsub(/\s+/, "") == @quizs[i]["correctAnswer"]
         marks_calculate +=1
       else
         @incorrect_quiz+=1
@@ -105,17 +107,5 @@ class QuizsController < ApplicationController
 
   def quizs_params
     params.require(:quizs).permit(:answer)
-  end
-
-  def zero_if_negative(num)
-    [ num.abs, 0 ].max
-  end
-
-  def quiz_options
-    @quizs = session[:quizs]
-    @total_quiz = @quizs.count
-    @start_quiz = session[:start_quiz] || 0
-    @answers = session[:answers] || []
-    @complete_quiz_percentage = 0
   end
 end
